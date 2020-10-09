@@ -1,6 +1,6 @@
 import React from 'react'
 
-function chat() {
+function Chat() {
   return (
     <div>
       <h1>Chat</h1>
@@ -8,4 +8,4 @@ function chat() {
   )
 }
 
-export default chat
+export default Chat
