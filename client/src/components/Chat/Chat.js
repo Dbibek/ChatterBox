@@ -7,6 +7,8 @@ import Input from "../Input/Input";
 import Messages from "../Messages/Messages";
 import TextContainer from "../TextContainer/TextContainer";
 
+const ENDPOINT = "https://chatte-application.herokuapp.com/";
+
 let socket;
 
 function Chat({ location }) {
@@ -15,8 +17,6 @@ function Chat({ location }) {
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([]);
   const [users, setUsers] = useState("");
-
-  const ENDPOINT = "https://chatte-application.herokuapp.com/";
 
   useEffect(() => {
     const { name, room } = queryString.parse(location.search);
@@ -27,14 +27,16 @@ function Chat({ location }) {
     setRoom(room);
 
     socket.emit("join", { name, room }, (error) => {
-      error ? alert(error) : null;
+      if (error) {
+        alert(error);
+      }
     });
 
-    return () => {
-      socket.emit("disconnect");
+    // return () => {
+    //   socket.emit("disconnect");
 
-      socket.off();
-    };
+    //   socket.off();
+    // };
   }, [ENDPOINT, location.search]);
 
   useEffect(() => {
@@ -47,6 +49,7 @@ function Chat({ location }) {
   }, []);
 
   //function for sending messages
+
   const sendMessage = (event) => {
     event.preventDefault();
 
@@ -54,7 +57,6 @@ function Chat({ location }) {
       socket.emit("sendMessage", message, () => setMessage(""));
     }
   };
-  console.log(message, messages);
 
   return (
     <div className="outerContainer">
