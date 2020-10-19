@@ -31,22 +31,21 @@ function Chat({ location }) {
         alert(error);
       }
     });
-
-    // return () => {
-    //   socket.emit("disconnect");
-
-    //   socket.off();
-    // };
   }, [ENDPOINT, location.search]);
 
   useEffect(() => {
     socket.on("message", (message) => {
-      setMessages((messages) => [...messages, message]);
+      setMessages([...messages, message]);
     });
     socket.on("roomData", ({ users }) => {
       setUsers(users);
     });
-  }, []);
+    return () => {
+      socket.emit("disconnect");
+
+      socket.off();
+    };
+  }, [messages]);
 
   //function for sending messages
 
